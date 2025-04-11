@@ -1,4 +1,5 @@
 import express from "express"
+import './env.js'
 import swagger from 'swagger-ui-express'
 // import apiDocs from './swagger.json' assert { type: 'json' } 
 // No import assertion used
@@ -15,9 +16,14 @@ import cors  from 'cors';
 
 // For hashing passwords:npm i bcrypt
 
-
-
+// For environment var:npm i dotenv
+import dotenv from 'dotenv' // Make .env file, include it in gitignore and declare env var. there, to load those env variable:
 const server=express();
+dotenv.config();
+
+
+
+
 // Swagger 2.0// For swagger 3.0 I can see the video
 const apiDocs = JSON.parse(
     await readFile(new URL('./swagger.json', import.meta.url))

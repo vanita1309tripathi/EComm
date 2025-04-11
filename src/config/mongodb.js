@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";//MongoClient is a Class--npm i mongodb
 
-const url="mongodb://localhost:27017/ecomdb"
+const url=process.env.DB_URL;
 let client;
 const connectTOMongodb=()=>{
     MongoClient.connect(url).then(clientInstance=>{
