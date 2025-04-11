@@ -2,16 +2,19 @@ import express from "express"
 import swagger from 'swagger-ui-express'
 // import apiDocs from './swagger.json' assert { type: 'json' } 
 // No import assertion used
+
 import { readFile } from 'fs/promises';
 import jwtAuth from "./src/middleware/jwt.middleware.js";
 import {getDB,connectTOMongodb} from "./src/config/mongodb.js";
-
 
 import bodyParser from "body-parser";
 import userRouter from "./src/features/User/user.route.js"
 import productRouter from "./src/features/Product/product.route.js"
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
 import cors  from 'cors';
+
+// For hashing passwords:npm i bcrypt
+
 
 
 const server=express();
