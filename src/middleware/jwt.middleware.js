@@ -13,11 +13,13 @@ const jwtAuth=(req,res,next)=>{
     try{
        const payload= jwt.verify(token,'AuyVfihGQo');
        console.log(payload);
+       req.userId=payload.userId;
+       next();
     }
     catch(err){
         res.status(401).send("Invalid Token");
     }
-    next();
+   
 }
 export default jwtAuth;
 //  The basic idea:

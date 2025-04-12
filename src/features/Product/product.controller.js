@@ -29,7 +29,7 @@ export class ProductController{
             res.status(500).send("Failed to fetch products.");
           }
     }
-    
+
     async addProduct(req,res,next){
       try{
         const {name,desc,price,imageURL}=req.body;
@@ -41,6 +41,37 @@ export class ProductController{
         console.log(err);
         res.send("Product can't be added")
     }
+    }
+
+    async filterProduct(req,res,next){
+        //We will use query parameter instead of root parameter
+        //the request will look like :../filter?minPrice=10&maxPrice=20
+        try{
+            const minPrice=req.query.minPrice;
+        const maxPrice=req.query.maxPrice;
+       
+        const product=await this.productRepository.filter(minPrice,maxPrice);
+        console.log(product);
+        res.send(product);
+        }catch(err){
+            console.log(err);
+            res.send("Products could not be filtered because of the error:",err);
+        }
+    }
+
+    async  rateProduct(req,res,next){
+        try{
+            const userId=req.userId;
+        const productId=req.query.productId;
+        const rating = parseFloat(req.query.rating);
+       await this.productRepository.rate(userId,productId,rating);
+   
+        res.status(200).send("Rating has been added");
+       
+        }catch(err){
+            console.log(err);
+            res.send("Products could not be rated because of the error:",err);
+        }
     }
     
 // B4 using MongoDb:
@@ -57,27 +88,25 @@ export class ProductController{
     //     ProductModel.add(req.body);
     //     res.status(200).send("New Product has been added");
     // }
-    rateProduct(req,res,next){
-        const userId=req.query.userId;
-        const productId=req.query.productId;
-        const rating=req.query.rating;
-       let r=ProductModel.rate(userId,productId,rating);
-       if(r){
-        res.status(200).send("Rating has been added");
-       }
-       else{
-        res.status(400).send("Rating could not be added");
-       }
+    // rateProduct(req,res,next){
+    //     const userId=req.query.userId;
+    //     const productId=req.query.productId;
+    //     const rating=req.query.rating;
+    //    let r=ProductModel.rate(userId,productId,rating);
+    //    if(r){
+    //     res.status(200).send("Rating has been added");
+    //    }
+    //    else{
+    //     res.status(400).send("Rating could not be added");
+    //    }
+    // }
 
-
-        
-    }
-    filterProduct(req,res,next){
-        //We will use query parameter instead of root parameter
-        //the request will look like :../filter?minPrice=10&maxPrice=20
-        const minPrice=req.query.minPrice;
-        const maxPrice=req.query.maxPrice;
-        const product=ProductModel.filter(minPrice,maxPrice);
-        res.send(product);
-    }
+    // filterProduct(req,res,next){
+    //     //We will use query parameter instead of root parameter
+    //     //the request will look like :../filter?minPrice=10&maxPrice=20
+    //     const minPrice=req.query.minPrice;
+    //     const maxPrice=req.query.maxPrice;
+    //     const product=ProductModel.filter(minPrice,maxPrice);
+    //     res.send(product);
+    // }
 }

@@ -33,8 +33,9 @@ export class userController{
             const result=await this.userRepository.signIn(email,password);
         if(result)
             { 
-                const token=jwt.sign({userId:result.id,
-                            email:result.email
+                const token=jwt.sign(
+                        {userId:result._id,
+                          email:result.email
                         },process.env.JWT_SECRET,
                        {
                         expiresIn:'1h'

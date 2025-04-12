@@ -34,5 +34,45 @@ class ProductRepository{
             console.log(err);
         }
     }
+async filter(minPrice,maxPrice){
+    try{
+        const db=getDB();
+        const collection=db.collection("products");
+        let filterExpression={};
+        
+        if(minPrice)   //if minPrice is provided for filtering
+        {
+            filterExpression.price={$gte:parseFloat(minPrice)}
+            console.log("Filter Expression:",filterExpression);
+        }
+        if(maxPrice)
+        {
+            filterExpression.price={...filterExpression.price,$lte:parseFloat(maxPrice)}
+            console.log("Filter Expression:",filterExpression);
+        }
+        const result=await collection.find(filterExpression).toArray();
+        console.log(result);
+        return result;
+          
+
+    }catch(err){
+            console.log(err);
+    }
+}
+    async rate(userId,productId,rating){
+        try{
+            const db=getDB();
+            const collection=db.collection("products");
+            await collection.updateOne({_id:new ObjectId(productId)},
+            {
+                $push: {ratings:{userId,rating}}
+            })
+          
+        }catch(err){
+            console.log(err);
+            throw err;
+    }
+    }
+
 }
  export {ProductRepository}
