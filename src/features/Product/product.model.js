@@ -1,22 +1,23 @@
 import { userModel } from "../User/user.model.js";
 export default class ProductModel{
-    constructor(_id,_name,_desc,_price,_imageUrl){
-        this.id=_id;
+    constructor(_name,_desc,_price,_imageUrl){
+        // this.id=_id;
         this.name=_name;
         this.desc=_desc;
         this.price=_price;
         this.imageURL=_imageUrl;
 
     }
-    static getAll(){
-        return products;
-    }
-    static add(product){
+    // B4 MongoDb:
+    // static getAll(){
+    //     return products;
+    // }
+    // static add(product){
        
-       product.id=  products.length + 1,
-        console.log("New Product:",product);
-        products.push(product);
-    }
+    //    product.id=  products.length + 1,
+    //     console.log("New Product:",product);
+    //     products.push(product);
+    // }
     static filter(minPrice,maxPrice){
         let product=products.filter(f=>(
             f.price>=minPrice&&f.price<=maxPrice

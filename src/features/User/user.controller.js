@@ -9,7 +9,7 @@ export class userController{
     constructor(){
         this.userRepository=new userRepository();
     }
-    // Have to remove static keyword a scan't use static with this
+    // Have to remove static keyword as can't use static with 'this'
     async signUpUser(req, res, next) {
     
         try {

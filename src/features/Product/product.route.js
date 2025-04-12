@@ -4,8 +4,15 @@ const productController=new ProductController();
 
 const router=express.Router();
 
-router.get('/',productController.getProducts);
-router.post('/',productController.addProduct);
+router.get('/:id',(req,res,next)=>{
+    productController.getProduct(req,res,next);
+});
+router.get('/',(req,res,next)=>{
+    productController.getAllProducts(req,res,next);
+});
+router.post('/',(req,res,next)=>{
+    productController.addProduct(req,res,next);
+});
 router.get('/filter',productController.filterProduct);
 router.post('/rate',productController.rateProduct);
 
