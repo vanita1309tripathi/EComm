@@ -9,7 +9,7 @@ router.post('/signUp',(req,res)=>{
     userController.signUpUser(req,res);
 });
 router.post('/signIn',(req,res)=>{
-    console.log("Inside /login route"); 
+    console.log("Inside /signIn route"); 
     userController.signInUser(req,res);
 });
 

@@ -31,6 +31,7 @@ export class userController{
         try{
             const {email,password}=req.body;
             const result=await this.userRepository.signIn(email,password);
+            console.log("Result:",result);
         if(result)
             { 
                 const token=jwt.sign(

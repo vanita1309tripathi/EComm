@@ -24,6 +24,7 @@ export class userRepository{
                 const collection=db.collection("users");
                   // await "unwraps" the Promise and gives you the value inside it.
                 const user = await collection.findOne({ email });
+                console.log(user);
                 if (!user) return null;
             
                 const isMatch = await bcrypt.compare(password, user.password);

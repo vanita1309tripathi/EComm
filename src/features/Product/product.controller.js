@@ -62,8 +62,10 @@ export class ProductController{
     async  rateProduct(req,res,next){
         try{
             const userId=req.userId;
-        const productId=req.query.productId;
-        const rating = parseFloat(req.query.rating);
+            const productId=req.body.productId;
+            const rating = parseFloat(req.body.rating);
+        // const productId=req.query.productId;
+        // const rating = parseFloat(req.query.rating);
        await this.productRepository.rate(userId,productId,rating);
    
         res.status(200).send("Rating has been added");

@@ -59,20 +59,59 @@ async filter(minPrice,maxPrice){
             console.log(err);
     }
 }
-    async rate(userId,productId,rating){
-        try{
-            const db=getDB();
-            const collection=db.collection("products");
-            await collection.updateOne({_id:new ObjectId(productId)},
-            {
-                $push: {ratings:{userId,rating}}
-            })
-          
-        }catch(err){
-            console.log(err);
-            throw err;
-    }
-    }
+
+// Rating Products:To avoid race condition
+async rate(userId,productId,rating){
+    try{
+        const db=getDB();
+        const collection=db.collection("products");
+       
+
+        await collection.updateOne({_id:new ObjectId(productId)},
+        {
+            $pull: {ratings:{userId:new ObjectId(userId)}}
+        })
+        console.log("Adding ratings",rating);
+        await collection.updateOne({_id:new ObjectId(productId)},
+        {
+           
+            $push: {ratings:{userId:new ObjectId(userId),rating:rating}}
+        })
+        
+
+    }catch(err){
+        console.log(err);
+        throw err;
+}
+}
+
+    // async rate(userId,productId,rating){
+    //     try{
+    //         const db=getDB();
+    //         const collection=db.collection("products");
+    //         let product=await collection.findOne({_id:new ObjectId(productId)});
+    //         // Conditional Chaining ?. :Used to safely access properties of an object that might be null or undefined,instead of throwing error
+
+    //         let userRating=  product?.rating?.find(r=>r.userId==userId);
+    //         if(userRating){
+    //             await collection.updateOne({_id:new ObjectId(productId),"ratings.userId":new ObjectId(userId)},
+    //             {
+    //                 $set:{"ratings.$.rating":rating}
+    //             }
+    //         )
+    //         }
+    //         else{
+    //             await collection.updateOne({_id:new ObjectId(productId)},
+    //             {
+    //                 $push: {ratings:{userId,rating}}
+    //             })
+    //         }
+
+    //     }catch(err){
+    //         console.log(err);
+    //         throw err;
+    // }
+    // }
 
 }
  export {ProductRepository}
