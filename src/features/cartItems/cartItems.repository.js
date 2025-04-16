@@ -6,7 +6,16 @@ export default class CartRepository{
         try{
             const db=getDB();
             const collection=db.collection("cart"); 
-            const addedItem=await collection.insertOne({productID:new ObjectId(productID),userId:new ObjectId(userID),quantity});
+            const id=await this.getNextCounter(db);
+            console.log("cartId",id);
+               // const addedItem=await collection.insertOne({productID:new ObjectId(productID),userId:new ObjectId(userID),quantity});
+             // This created new entry for same userId and product and doesn't add up the quantity so, we use update and upsert
+      
+               const addedItem=await collection.updateOne({productID:new ObjectId(productID),userId:new ObjectId(userID)},
+            {   $setOnInsert:{_id:id},
+                $inc:{quantity:quantity}},
+            {upsert:true}
+        );
             console.log("added Item in the cart:",addedItem);
             return addedItem;
         }
@@ -21,7 +30,7 @@ export default class CartRepository{
             const db=getDB();
             const collection=db.collection("cart"); 
             const cartItems=await collection.find({userId:new ObjectId(userID)}).toArray();
-            console.log("Get Vt Cart Items:",cartItems);
+            console.log("Get Cart Items:",cartItems);
             return cartItems;
         }
         catch(err){
@@ -43,4 +52,18 @@ export default class CartRepository{
         }
 
     }
+    async getNextCounter(db){
+        const result=await db.collection("counters").findOneAndUpdate({_id:"cartItemId"},
+          {
+            $inc:{value:1}
+          },
+          {
+            returnDocument:'after'
+          }
+
+        )
+        console.log("Result:",result);
+        console.log(result.value);
+        return result.value;
+      }
 }
