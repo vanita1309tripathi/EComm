@@ -39,7 +39,7 @@ async filter(minPrice,maxPrice){
         const db=getDB();
         const collection=db.collection("products");
         let filterExpression={};
-        
+        // We can use more filters like $in, $and, $or
         if(minPrice)   //if minPrice is provided for filtering
         {
             filterExpression.price={$gte:parseFloat(minPrice)}
@@ -50,10 +50,12 @@ async filter(minPrice,maxPrice){
             filterExpression.price={...filterExpression.price,$lte:parseFloat(maxPrice)}
             console.log("Filter Expression:",filterExpression);
         }
-        const result=await collection.find(filterExpression).toArray();
+        // Projection Operator & $slice to include first 2 rating from the ratings array
+        const result=await collection.find(filterExpression).project({name:1,price:1,_id:0,ratings:{$slice:2}}).toArray();
         console.log(result);
         return result;
-          
+        //Similarly we can use aggregate operator and use $group.$avg,$push to filter out fields and group them
+        //Refer to Aggregation Pipeline 2 video
 
     }catch(err){
             console.log(err);

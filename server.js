@@ -12,6 +12,7 @@ import bodyParser from "body-parser";
 import userRouter from "./src/features/User/user.route.js"
 import productRouter from "./src/features/Product/product.route.js"
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
+import orderRouter from "./src/features/Order/order.routes.js";
 import cors  from 'cors';
 
 // For hashing passwords:npm i bcrypt
@@ -48,6 +49,7 @@ server.use('/api/product',productRouter)
 server.use('/api/user',userRouter)
 
 server.use('/api/cartItems', jwtAuth, cartRouter);
+server.use('/api/orders',jwtAuth,orderRouter);
 
 // Default route
 server.get('/',(req,res)=>{

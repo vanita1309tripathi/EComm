@@ -3,3 +3,17 @@ Get Products
 Add a Product
 Get one Product
 Rate Product
+
+
+Place an Order:
+1. Get the cart items of the user and calculate the total amount
+2. Create a record of the Order
+3. Reduce the stock in the product i.e product's quantity
+4. Clear the cart
+
+5. Deduct the type of payment
+6. Inform sellers
+7. Inform courier.
+If any of the op fails,all should be reverted back-- for that we have transactions
+
+
